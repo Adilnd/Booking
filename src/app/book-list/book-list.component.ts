@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {BooksService} from '../services/books.service';
+import {Subscription} from 'rxjs';
+import {BookModel} from '../models/Book.model';
 
 @Component({
   selector: 'app-book-list',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookListComponent implements OnInit {
 
-  constructor() { }
+  books: BookModel[];
+  bookSubscription: Subscription;
+
+  constructor(private booksService: BooksService) { }
+
+
 
   ngOnInit() {
+this.bookSubscription = this.booksService.bookSubject.subscribe(
+  (books: BookModel[]) => {
+    this.books = books;
+  }
+);
+this.booksService.emitBooks();
+console.log('Hahoma lktouba');
+console.log(this.books);
+console.log('*******');
   }
 
 }
